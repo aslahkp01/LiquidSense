@@ -47,13 +47,12 @@ MODELS_DIR = os.path.join(BASE_DIR, "models")
 # Add overrides here if your filenames don't contain the purity number.
 KNOWN_SAMPLES = {
     "milk": {
-        "ab_8.s2p": 0,
+        "ab_8.s2p": 0,    # pure water / adulterant
         "ab_7.s2p": 10,
-        "ab_6.s2p": 15,
         "ab_5.s2p": 25,
         "ab_3.s2p": 50,
         "ab_4.s2p": 75,
-        "ab_2.s2p": 100,
+        "ab_2.s2p": 100,  # pure milk
     },
     # Example for when you add honey data:
     # "honey": {
