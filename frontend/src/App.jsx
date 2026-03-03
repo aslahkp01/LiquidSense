@@ -1,13 +1,24 @@
 import { useState, useRef } from 'react'
 import './App.css'
 
+const LIQUID_TYPES = [
+  { value: 'milk', label: 'Milk', icon: '🥛', pureLabel: 'Milk Content', subtitle: 'Milk Adulteration Detection' },
+  { value: 'honey', label: 'Honey', icon: '🍯', pureLabel: 'Honey Content', subtitle: 'Honey Adulteration Detection' },
+  { value: 'oil', label: 'Cooking Oil', icon: '🫒', pureLabel: 'Oil Purity', subtitle: 'Cooking Oil Adulteration Detection' },
+  { value: 'juice', label: 'Fruit Juice', icon: '🧃', pureLabel: 'Juice Content', subtitle: 'Fruit Juice Adulteration Detection' },
+  { value: 'water', label: 'Water', icon: '💧', pureLabel: 'Water Purity', subtitle: 'Water Quality Detection' },
+]
+
 function App() {
   const [file, setFile] = useState(null)
+  const [liquidType, setLiquidType] = useState('milk')
   const [result, setResult] = useState(null)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
   const [dragActive, setDragActive] = useState(false)
   const inputRef = useRef(null)
+
+  const selectedLiquid = LIQUID_TYPES.find(l => l.value === liquidType)
 
   const handleDrag = (e) => {
     e.preventDefault()
@@ -47,6 +58,7 @@ function App() {
 
     const formData = new FormData()
     formData.append('file', file)
+    formData.append('liquid_type', liquidType)
 
     try {
       const API_URL = (import.meta.env.VITE_API_URL || '').replace(/\/+$/, '')
@@ -75,10 +87,10 @@ function App() {
     if (inputRef.current) inputRef.current.value = ''
   }
 
-  const getMilkQuality = (milkPct) => {
-    if (milkPct >= 90) return { label: 'Pure', color: '#4caf50' }
-    if (milkPct >= 70) return { label: 'Slightly Adulterated', color: '#ff9800' }
-    if (milkPct >= 50) return { label: 'Moderately Adulterated', color: '#f44336' }
+  const getQuality = (purity) => {
+    if (purity >= 90) return { label: 'Pure', color: '#4caf50' }
+    if (purity >= 70) return { label: 'Slightly Adulterated', color: '#ff9800' }
+    if (purity >= 50) return { label: 'Moderately Adulterated', color: '#f44336' }
     return { label: 'Highly Adulterated', color: '#b71c1c' }
   }
 
@@ -94,7 +106,23 @@ function App() {
             </svg>
           </div>
           <h1>LiquidSense</h1>
-          <p className="subtitle">Milk Adulteration Detection System</p>
+          <p className="subtitle">{selectedLiquid.subtitle}</p>
+        </div>
+
+        <div className="liquid-selector">
+          <label className="selector-label">Select Sample Type</label>
+          <div className="liquid-options">
+            {LIQUID_TYPES.map((type) => (
+              <button
+                key={type.value}
+                className={`liquid-option ${liquidType === type.value ? 'selected' : ''}`}
+                onClick={() => { setLiquidType(type.value); setResult(null); setError(null); }}
+              >
+                <span className="liquid-icon">{type.icon}</span>
+                <span className="liquid-label">{type.label}</span>
+              </button>
+            ))}
+          </div>
         </div>
 
         <div
@@ -174,12 +202,12 @@ function App() {
             <h2>Analysis Results</h2>
             <div className="result-cards">
               <div className="result-card milk">
-                <div className="result-value">{result.Milk_Percentage}%</div>
-                <div className="result-label">Milk Content</div>
+                <div className="result-value">{result.Purity_Percentage}%</div>
+                <div className="result-label">{selectedLiquid.pureLabel}</div>
                 <div className="progress-bar">
                   <div
                     className="progress-fill milk-fill"
-                    style={{ width: `${result.Milk_Percentage}%` }}
+                    style={{ width: `${result.Purity_Percentage}%` }}
                   ></div>
                 </div>
               </div>
@@ -194,11 +222,15 @@ function App() {
                 </div>
               </div>
             </div>
+            <div className="result-meta">
+              <span className="meta-item">Sample: {selectedLiquid.icon} {selectedLiquid.label}</span>
+              <span className="meta-item">Freq: {result.Resonant_Frequency_GHz} GHz</span>
+            </div>
             <div
               className="quality-badge"
-              style={{ backgroundColor: getMilkQuality(result.Milk_Percentage).color }}
+              style={{ backgroundColor: getQuality(result.Purity_Percentage).color }}
             >
-              {getMilkQuality(result.Milk_Percentage).label}
+              {getQuality(result.Purity_Percentage).label}
             </div>
           </div>
         )}

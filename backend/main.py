@@ -1,4 +1,4 @@
-from fastapi import FastAPI, UploadFile, File
+from fastapi import FastAPI, UploadFile, File, Form
 from fastapi.middleware.cors import CORSMiddleware
 import joblib
 import shutil
@@ -29,7 +29,7 @@ async def root():
     return {"status": "ok", "message": "LiquidSense API is running"}
 
 @app.post("/predict")
-async def predict(file: UploadFile = File(...)):
+async def predict(file: UploadFile = File(...), liquid_type: str = Form("milk")):
     file_path = os.path.join(BASE_DIR, "temp.s2p")
 
     with open(file_path, "wb") as buffer:
@@ -39,12 +39,13 @@ async def predict(file: UploadFile = File(...)):
     feature_array = extract_feature_array(file_path).reshape(1, -1)
     prediction = model.predict(feature_array)
 
-    milk = max(0.0, min(100.0, float(prediction[0])))
-    adulteration = 100 - milk
+    purity = max(0.0, min(100.0, float(prediction[0])))
+    adulteration = 100 - purity
 
     return {
-        "Milk_Percentage": round(milk, 2),
+        "Purity_Percentage": round(purity, 2),
         "Adulteration": round(adulteration, 2),
+        "Liquid_Type": liquid_type,
         "Resonant_Frequency_GHz": round(features["resonant_freq_ghz"], 4),
         "Min_S21_dB": round(features["min_s21_db"], 2),
         "Q_Factor": round(features["q_factor"], 2),
