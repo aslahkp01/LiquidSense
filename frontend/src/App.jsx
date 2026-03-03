@@ -222,10 +222,6 @@ function App() {
                 </div>
               </div>
             </div>
-            <div className="result-meta">
-              <span className="meta-item">Sample: {selectedLiquid.icon} {selectedLiquid.label}</span>
-              <span className="meta-item">Freq: {result.Resonant_Frequency_GHz} GHz</span>
-            </div>
             <div
               className="quality-badge"
               style={{ backgroundColor: getQuality(result.Purity_Percentage).color }}
