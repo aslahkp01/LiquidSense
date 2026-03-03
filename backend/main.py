@@ -24,6 +24,10 @@ app.add_middleware(
 
 model = joblib.load(os.path.join(BASE_DIR, "regression_model.pkl"))
 
+@app.get("/")
+async def root():
+    return {"status": "ok", "message": "LiquidSense API is running"}
+
 @app.post("/predict")
 async def predict(file: UploadFile = File(...)):
     file_path = os.path.join(BASE_DIR, "temp.s2p")
