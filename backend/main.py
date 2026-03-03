@@ -4,7 +4,11 @@ import joblib
 import shutil
 import os
 import numpy as np
-from backend.feature_extractor import extract_features, extract_feature_array
+
+try:
+    from backend.feature_extractor import extract_features, extract_feature_array
+except ImportError:
+    from feature_extractor import extract_features, extract_feature_array
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
