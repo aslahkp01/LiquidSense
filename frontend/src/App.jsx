@@ -16,6 +16,7 @@ function App() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
   const [dragActive, setDragActive] = useState(false)
+  const [showTechDetails, setShowTechDetails] = useState(false)
   const inputRef = useRef(null)
 
   const selectedLiquid = LIQUID_TYPES.find(l => l.value === liquidType)
@@ -227,6 +228,38 @@ function App() {
               style={{ backgroundColor: getQuality(result.Purity_Percentage).color }}
             >
               {getQuality(result.Purity_Percentage).label}
+            </div>
+
+            {/* RF Technical Details */}
+            <div className="technical-details">
+              <button
+                className="tech-toggle"
+                onClick={() => setShowTechDetails(prev => !prev)}
+              >
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2">
+                  <circle cx="12" cy="12" r="10" />
+                  <line x1="12" y1="16" x2="12" y2="12" />
+                  <line x1="12" y1="8" x2="12.01" y2="8" />
+                </svg>
+                RF Technical Details
+                <span className={`chevron ${showTechDetails ? 'open' : ''}`}>&#9662;</span>
+              </button>
+              {showTechDetails && (
+                <div className="tech-grid">
+                  <div className="tech-item">
+                    <span className="tech-label">Resonant Frequency</span>
+                    <span className="tech-value">{result.Resonant_Frequency_GHz} GHz</span>
+                  </div>
+                  <div className="tech-item">
+                    <span className="tech-label">Min S21 (Dip Depth)</span>
+                    <span className="tech-value">{result.Min_S21_dB} dB</span>
+                  </div>
+                  <div className="tech-item">
+                    <span className="tech-label">Q-Factor</span>
+                    <span className="tech-value">{result.Q_Factor}</span>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         )}

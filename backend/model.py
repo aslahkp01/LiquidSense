@@ -23,6 +23,7 @@ import numpy as np
 import re
 from sklearn.linear_model import Ridge
 from sklearn.svm import SVR
+from sklearn.neighbors import KNeighborsRegressor
 from sklearn.ensemble import GradientBoostingRegressor
 from sklearn.preprocessing import StandardScaler, PolynomialFeatures
 from sklearn.pipeline import Pipeline
@@ -49,6 +50,7 @@ KNOWN_SAMPLES = {
     "milk": {
         "ab_8.s2p": 0,    # pure water / adulterant
         "ab_7.s2p": 10,
+        "ab_6.s2p": 15,
         "ab_5.s2p": 25,
         "ab_3.s2p": 50,
         "ab_4.s2p": 75,
@@ -104,9 +106,26 @@ def get_candidate_models():
             ("poly", PolynomialFeatures(degree=2, include_bias=False)),
             ("ridge", Ridge(alpha=1.0)),
         ]),
-        "SVR (RBF)": Pipeline([
+        "Ridge (Poly deg=3)": Pipeline([
+            ("scaler", StandardScaler()),
+            ("poly", PolynomialFeatures(degree=3, include_bias=False)),
+            ("ridge", Ridge(alpha=10.0)),
+        ]),
+        "SVR (RBF, C=100)": Pipeline([
             ("scaler", StandardScaler()),
             ("svr", SVR(kernel="rbf", C=100, gamma="scale", epsilon=5)),
+        ]),
+        "SVR (RBF, C=1000)": Pipeline([
+            ("scaler", StandardScaler()),
+            ("svr", SVR(kernel="rbf", C=1000, gamma="scale", epsilon=1)),
+        ]),
+        "SVR (Linear)": Pipeline([
+            ("scaler", StandardScaler()),
+            ("svr", SVR(kernel="linear", C=100, epsilon=2)),
+        ]),
+        "KNN (k=2)": Pipeline([
+            ("scaler", StandardScaler()),
+            ("knn", KNeighborsRegressor(n_neighbors=2, weights="distance")),
         ]),
         "Gradient Boosting": Pipeline([
             ("scaler", StandardScaler()),

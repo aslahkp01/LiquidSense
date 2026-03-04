@@ -18,3 +18,16 @@ body {
   min-height: 100vh;
   padding: 2rem;
 }
+
+@media (max-width: 600px) {
+  #root {
+    padding: 1rem;
+    align-items: flex-start;
+  }
+}
+
+@media (max-width: 380px) {
+  #root {
+    padding: 0.6rem;
+  }
+}

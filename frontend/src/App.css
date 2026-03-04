@@ -337,3 +337,181 @@
   border-radius: 6px;
   border: 1px solid rgba(255, 255, 255, 0.08);
 }
+
+/* Technical Details */
+.technical-details {
+  margin-top: 1.2rem;
+}
+
+.tech-toggle {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.65rem 1rem;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  color: #aaa;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.tech-toggle:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: #ccc;
+}
+
+.chevron {
+  font-size: 0.7rem;
+  transition: transform 0.25s ease;
+  display: inline-block;
+}
+
+.chevron.open {
+  transform: rotate(180deg);
+}
+
+.tech-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.6rem;
+  margin-top: 0.8rem;
+  animation: fadeIn 0.3s ease;
+}
+
+.tech-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.7rem 1rem;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 8px;
+}
+
+.tech-label {
+  font-size: 0.8rem;
+  color: #999;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.tech-value {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #c4b5fd;
+}
+
+/* ── Responsive Design ── */
+
+/* Tablets & small laptops */
+@media (max-width: 600px) {
+  .app {
+    max-width: 100%;
+  }
+
+  .card {
+    padding: 1.5rem;
+    border-radius: 16px;
+  }
+
+  .header h1 {
+    font-size: 1.5rem;
+  }
+
+  .liquid-options {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.4rem;
+  }
+
+  .liquid-option {
+    min-width: unset;
+    padding: 0.5rem 0.4rem;
+  }
+
+  .liquid-icon {
+    font-size: 1.2rem;
+  }
+
+  .liquid-label {
+    font-size: 0.6rem;
+  }
+
+  .dropzone {
+    padding: 1.4rem 1rem;
+  }
+
+  .result-cards {
+    grid-template-columns: 1fr 1fr;
+    gap: 0.7rem;
+  }
+
+  .result-value {
+    font-size: 1.6rem;
+  }
+
+  .result-label {
+    font-size: 0.7rem;
+  }
+
+  .tech-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.2rem;
+  }
+
+  .tech-value {
+    font-size: 0.85rem;
+  }
+}
+
+/* Very small phones */
+@media (max-width: 380px) {
+  .card {
+    padding: 1.2rem;
+    border-radius: 14px;
+  }
+
+  .header h1 {
+    font-size: 1.3rem;
+  }
+
+  .liquid-options {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .liquid-option {
+    padding: 0.4rem 0.3rem;
+  }
+
+  .liquid-icon {
+    font-size: 1rem;
+  }
+
+  .result-cards {
+    grid-template-columns: 1fr;
+  }
+
+  .result-value {
+    font-size: 1.8rem;
+  }
+
+  .actions {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .btn {
+    width: 100%;
+  }
+
+  .file-info {
+    flex-wrap: wrap;
+    gap: 0.3rem;
+  }
+}
