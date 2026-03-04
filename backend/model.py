@@ -50,7 +50,7 @@ KNOWN_SAMPLES = {
     "milk": {
         "ab_8.s2p": 0,    # pure water / adulterant
         "ab_7.s2p": 10,
-        "ab_6.s2p": 15,
+        "ab_6.s2p": 40,
         "ab_5.s2p": 25,
         "ab_3.s2p": 50,
         "ab_4.s2p": 75,
