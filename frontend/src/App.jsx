@@ -137,7 +137,6 @@ function App() {
           <input
             ref={inputRef}
             type="file"
-            accept=".s2p"
             onChange={handleFileChange}
             hidden
           />
@@ -159,7 +158,7 @@ function App() {
                 <polyline points="17,8 12,3 7,8" />
                 <line x1="12" y1="3" x2="12" y2="15" />
               </svg>
-              <p>Drag & drop your <strong>.s2p</strong> file here</p>
+              <p>Drag & drop your file here</p>
               <span className="or-text">or click to browse</span>
             </div>
           )}

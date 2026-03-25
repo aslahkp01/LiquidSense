@@ -4,6 +4,7 @@ import joblib
 import shutil
 import os
 import numpy as np
+import tempfile
 
 try:
     from backend.feature_extractor import extract_features, extract_feature_array
@@ -71,13 +72,25 @@ async def predict(file: UploadFile = File(...), liquid_type: str = Form("milk"))
             "available_models": available,
         }
 
-    file_path = os.path.join(BASE_DIR, "temp.s2p")
+    suffix = os.path.splitext(file.filename or "")[1] or ".tmp"
+    temp_file = tempfile.NamedTemporaryFile(delete=False, suffix=suffix, dir=BASE_DIR)
+    file_path = temp_file.name
+    temp_file.close()
 
     with open(file_path, "wb") as buffer:
         shutil.copyfileobj(file.file, buffer)
 
-    features = extract_features(file_path)
-    feature_array = extract_feature_array(file_path).reshape(1, -1)
+    try:
+        features = extract_features(file_path)
+        feature_array = extract_feature_array(file_path).reshape(1, -1)
+    except Exception as exc:
+        return {
+            "error": "Could not parse uploaded file for prediction.",
+            "details": str(exc),
+        }
+    finally:
+        if os.path.exists(file_path):
+            os.remove(file_path)
 
     model = models[liquid_type]
     prediction = model.predict(feature_array)
